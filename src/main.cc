@@ -16,7 +16,7 @@ void Runas(const Nan::FunctionCallbackInfo<Value>& info) {
     return;
   }
 
-  std::string command(*String::Utf8Value(info[0]));
+  std::string command(*Nan::Utf8String(info[0]));
   std::vector<std::string> c_args;
 
   Local<Array> v_args = Local<Array>::Cast(info[1]);
@@ -24,25 +24,25 @@ void Runas(const Nan::FunctionCallbackInfo<Value>& info) {
 
   c_args.reserve(length);
   for (uint32_t i = 0; i < length; ++i) {
-    std::string arg(*String::Utf8Value(v_args->Get(i)));
+    std::string arg(*Nan::Utf8String(Nan::Get(v_args, i).ToLocalChecked()));
     c_args.push_back(arg);
   }
 
   Local<Value> v_value;
-  Local<Object> v_options = info[2]->ToObject();
+  Local<Object> v_options = Nan::To<Object>(info[2]).ToLocalChecked();
   int options = runas::OPTION_NONE;
-  if (GetProperty(v_options, "hide", &v_value) && v_value->BooleanValue())
+  if (GetProperty(v_options, "hide", &v_value) && Nan::To<bool>(v_value).FromJust())
     options |= runas::OPTION_HIDE;
-  if (GetProperty(v_options, "admin", &v_value) && v_value->BooleanValue())
+  if (GetProperty(v_options, "admin", &v_value) && Nan::To<bool>(v_value).FromJust())
     options |= runas::OPTION_ADMIN;
 
   std::string std_input;
   if (GetProperty(v_options, "stdin", &v_value) && v_value->IsString())
-    std_input = *String::Utf8Value(v_value);
+    std_input = *Nan::Utf8String(v_value);
 
   std::string std_output, std_error;
   bool catch_output = GetProperty(v_options, "catchOutput", &v_value) &&
-                      v_value->BooleanValue();
+                      Nan::To<bool>(v_value).FromJust();
   if (catch_output)
     options |= runas::OPTION_CATCH_OUTPUT;
 
@@ -67,10 +67,11 @@ void Runas(const Nan::FunctionCallbackInfo<Value>& info) {
   }
 }
 
-void Init(Handle<Object> exports) {
-  Nan::SetMethod(exports, "runas", Runas);
-}
-
 }  // namespace
 
-NODE_MODULE(runas, Init)
+
+NAN_MODULE_INIT(Init) {
+  Export(target, "runas", Runas);
+}
+
+NODE_MODULE(NODE_GYP_MODULE_NAME, Init)
