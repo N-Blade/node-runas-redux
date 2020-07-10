@@ -7,7 +7,7 @@ Run command synchronously with administrator privilege.
 ## Installing
 
 ```sh
-npm install runas
+npm install runas-redux
 ```
 
 ## Building
@@ -19,7 +19,7 @@ npm install runas
 ## Docs
 
 ```coffeescript
-runas = require 'runas'
+runas = require 'runas-redux'
 ```
 
 ### runas(command, args[, options])
