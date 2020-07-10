@@ -1,11 +1,13 @@
-# Runas
+# Runas Redux
 
 Run command synchronously with administrator privilege.
+
+> This a fork that adds compatibility with modern NodeJS versions.
 
 ## Installing
 
 ```sh
-npm install runas
+npm install runas-redux
 ```
 
 ## Building
@@ -17,7 +19,7 @@ npm install runas
 ## Docs
 
 ```coffeescript
-runas = require 'runas'
+runas = require 'runas-redux'
 ```
 
 ### runas(command, args[, options])
