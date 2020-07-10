@@ -1,6 +1,8 @@
-# Runas
+# Runas Redux
 
 Run command synchronously with administrator privilege.
+
+> This a fork that adds compatibility with modern NodeJS versions.
 
 ## Installing
 
