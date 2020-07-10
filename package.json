@@ -1,33 +1,21 @@
 {
   "main": "./lib/runas.js",
   "name": "runas-redux",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/atom/node-runas/raw/master/LICENSE.md"
+      "url": "http://github.com/atom/node-runas-redux/raw/master/LICENSE.md"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/eugeny/node-runas.git"
+    "url": "https://github.com/eugeny/node-runas-redux.git"
   },
   "bugs": {
-    "url": "https://github.com/eugeny/node-runas/issues"
-  },
-  "scripts": {
-    "prepublish": "grunt coffee",
-    "test": "node node_modules/jasmine-focused/bin/jasmine-focused --captureExceptions --coffee spec"
+    "url": "https://github.com/eugeny/node-runas-redux/issues"
   },
   "devDependencies": {
-    "coffee-script": "~1.6.2",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.7",
-    "grunt-contrib-coffee": "~0.6.6",
-    "grunt-shell": "~0.2.2",
-    "jasmine-focused": "^1.0.5",
-    "nan": "^2.14.0",
-    "node-cpplint": "~0.1.5"
-  },
-  "dependencies": {}
+    "node-addon-api": "^3.0.0"
+  }
 }

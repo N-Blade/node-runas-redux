@@ -1,77 +1,80 @@
-#include "nan.h"
-using namespace v8;
-
+#include "napi.h"
+#include "uv.h"
 #include "runas.h"
 
-namespace {
+using namespace Napi;
 
-inline
-bool GetProperty(Local<Object> obj, const char* key, Local<Value>* value) {
-  return Nan::Get(obj, Nan::New<String>(key).ToLocalChecked()).ToLocal(value);
-}
-
-void Runas(const Nan::FunctionCallbackInfo<Value>& info) {
-  if (!info[0]->IsString() || !info[1]->IsArray() || !info[2]->IsObject()) {
-    Nan::ThrowTypeError("Bad argument");
-    return;
+Napi::Value Runas(const Napi::CallbackInfo &info)
+{
+  auto env = info.Env();
+  if (!info[0].IsString() || !info[1].IsArray() || !info[2].IsObject())
+  {
+    Napi::TypeError::New(env, "Bad argument").ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  std::string command(*Nan::Utf8String(info[0]));
+  std::string command(info[0].As<Napi::String>().Utf8Value().c_str());
   std::vector<std::string> c_args;
 
-  Local<Array> v_args = Local<Array>::Cast(info[1]);
-  uint32_t length = v_args->Length();
+  Napi::Array v_args = info[1].As<Napi::Array>();
+  uint32_t length = v_args.Length();
 
   c_args.reserve(length);
-  for (uint32_t i = 0; i < length; ++i) {
-    std::string arg(*Nan::Utf8String(Nan::Get(v_args, i).ToLocalChecked()));
+  for (uint32_t i = 0; i < length; ++i)
+  {
+    std::string arg((v_args).Get(i).As<Napi::String>().Utf8Value().c_str());
     c_args.push_back(arg);
   }
 
-  Local<Value> v_value;
-  Local<Object> v_options = Nan::To<Object>(info[2]).ToLocalChecked();
+  Napi::Object v_options = info[2].As<Napi::Object>();
   int options = runas::OPTION_NONE;
-  if (GetProperty(v_options, "hide", &v_value) && Nan::To<bool>(v_value).FromJust())
+
+  auto v_hide = v_options.Get("hide");
+  if (v_hide.IsBoolean() && v_hide.As<Napi::Boolean>().Value())
     options |= runas::OPTION_HIDE;
-  if (GetProperty(v_options, "admin", &v_value) && Nan::To<bool>(v_value).FromJust())
+
+  auto v_admin = v_options.Get("admin");
+  if (v_admin.IsBoolean() && v_admin.As<Napi::Boolean>().Value())
     options |= runas::OPTION_ADMIN;
 
+  auto v_stdin = v_options.Get("stdin");
   std::string std_input;
-  if (GetProperty(v_options, "stdin", &v_value) && v_value->IsString())
-    std_input = *Nan::Utf8String(v_value);
+  if (v_stdin.IsString())
+    std_input = v_stdin.As<Napi::String>().Utf8Value().c_str();
 
+  auto v_catchOutput = v_options.Get("catchOutput");
   std::string std_output, std_error;
-  bool catch_output = GetProperty(v_options, "catchOutput", &v_value) &&
-                      Nan::To<bool>(v_value).FromJust();
-  if (catch_output)
-    options |= runas::OPTION_CATCH_OUTPUT;
+  bool catch_output = false;
+  if (v_catchOutput.IsBoolean()) {
+    catch_output = v_catchOutput.As<Napi::Boolean>().Value();
+    if (catch_output)
+      options |= runas::OPTION_CATCH_OUTPUT;
+  }
 
   int code = -1;
-  runas::Runas(command, c_args, std_input, &std_output, &std_error, options,
-               &code);
+  runas::Runas(command, c_args, std_input, &std_output, &std_error, options, &code);
 
-  if (catch_output) {
-    Local<Object> result = Nan::New<Object>();
-    Nan::Set(result,
-             Nan::New<String>("exitCode").ToLocalChecked(),
-             Nan::New<Integer>(code));
-    Nan::Set(result,
-             Nan::New<String>("stdout").ToLocalChecked(),
-             Nan::New<String>(std_output).ToLocalChecked());
-    Nan::Set(result,
-             Nan::New<String>("stderr").ToLocalChecked(),
-             Nan::New<String>(std_error).ToLocalChecked());
-    info.GetReturnValue().Set(result);
-  } else {
-    info.GetReturnValue().Set(Nan::New<Integer>(code));
+  if (catch_output)
+  {
+    Napi::Object result = Napi::Object::New(env);
+    (result).Set(Napi::String::New(env, "exitCode"),
+                 Napi::Number::New(env, code));
+    (result).Set(Napi::String::New(env, "stdout"),
+                 Napi::String::New(env, std_output));
+    (result).Set(Napi::String::New(env, "stderr"),
+                 Napi::String::New(env, std_error));
+    return result;
+  }
+  else
+  {
+    return Napi::Number::New(env, code);
   }
 }
 
-}  // namespace
-
-
-NAN_MODULE_INIT(Init) {
-  Export(target, "runas", Runas);
+Napi::Object Init(Napi::Env env, Napi::Object exports)
+{
+  exports.Set("runas", Napi::Function::New(env, Runas));
+  return exports;
 }
 
-NODE_MODULE(NODE_GYP_MODULE_NAME, Init)
+NODE_API_MODULE(NODE_GYP_MODULE_NAME, Init)

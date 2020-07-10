@@ -1,7 +1,8 @@
 /node_modules
 /build
-/lib
 *.swp
 *.log
 *~
 .node-version
+.mypy_cache
+.vscode
