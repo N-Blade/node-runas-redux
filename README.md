@@ -1,8 +1,11 @@
 # Runas Redux
 
+![Node.js CI](https://github.com/Eugeny/node-runas-redux/workflows/Node.js%20CI/badge.svg)
+
 Run command synchronously with administrator privilege.
 
 > This a fork that adds compatibility with modern NodeJS versions.
+
 
 ## Installing
 
