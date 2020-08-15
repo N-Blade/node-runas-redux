@@ -4,7 +4,7 @@
 
 Run command synchronously with administrator privilege.
 
-> This a fork that adds compatibility with modern NodeJS versions.
+> This is an N-API based rewrite that adds compatibility with modern NodeJS versions.
 
 
 ## Installing
@@ -21,8 +21,8 @@ npm install runas-redux
 
 ## Docs
 
-```coffeescript
-runas = require 'runas-redux'
+```js
+const runas = require('runas-redux')
 ```
 
 ### runas(command, args[, options])
