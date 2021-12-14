@@ -1,6 +1,7 @@
 #include "napi.h"
 #include "uv.h"
 #include "runas.h"
+#include "wstring.h"
 
 using namespace Napi;
 
@@ -13,8 +14,8 @@ Napi::Value Runas(const Napi::CallbackInfo &info)
     return env.Null();
   }
 
-  std::string command(info[0].As<Napi::String>().Utf8Value().c_str());
-  std::vector<std::string> c_args;
+  std::wstring command = info[0].As<WString>().WValue();
+  std::vector<std::wstring> c_args;
 
   Napi::Array v_args = info[1].As<Napi::Array>();
   uint32_t length = v_args.Length();
@@ -22,7 +23,7 @@ Napi::Value Runas(const Napi::CallbackInfo &info)
   c_args.reserve(length);
   for (uint32_t i = 0; i < length; ++i)
   {
-    std::string arg((v_args).Get(i).As<Napi::String>().Utf8Value().c_str());
+    std::wstring arg((v_args).Get(i).As<WString>().WValue());
     c_args.push_back(arg);
   }
 
@@ -38,12 +39,12 @@ Napi::Value Runas(const Napi::CallbackInfo &info)
     options |= runas::OPTION_ADMIN;
 
   auto v_stdin = v_options.Get("stdin");
-  std::string std_input;
+  std::wstring std_input;
   if (v_stdin.IsString())
-    std_input = v_stdin.As<Napi::String>().Utf8Value().c_str();
+    std_input = v_stdin.As<WString>().WValue();
 
   auto v_catchOutput = v_options.Get("catchOutput");
-  std::string std_output, std_error;
+  std::wstring std_output, std_error;
   bool catch_output = false;
   if (v_catchOutput.IsBoolean()) {
     catch_output = v_catchOutput.As<Napi::Boolean>().Value();
@@ -57,12 +58,12 @@ Napi::Value Runas(const Napi::CallbackInfo &info)
   if (catch_output)
   {
     Napi::Object result = Napi::Object::New(env);
-    (result).Set(Napi::String::New(env, "exitCode"),
+    (result).Set(WString::New(env, L"exitCode"),
                  Napi::Number::New(env, code));
-    (result).Set(Napi::String::New(env, "stdout"),
-                 Napi::String::New(env, std_output));
-    (result).Set(Napi::String::New(env, "stderr"),
-                 Napi::String::New(env, std_error));
+    (result).Set(WString::New(env, L"stdout"),
+                 WString::New(env, std_output));
+    (result).Set(WString::New(env, L"stderr"),
+                 WString::New(env, std_error));
     return result;
   }
   else

@@ -4,18 +4,18 @@
 
 namespace runas {
 
-std::string QuoteCmdArg(const std::string& arg) {
+std::wstring QuoteCmdArg(const std::wstring& arg) {
   if (arg.size() == 0)
     return arg;
 
   // No quotation needed.
-  if (arg.find_first_of(" \t\"") == std::string::npos)
+  if (arg.find_first_of(L" \t\"") == std::wstring::npos)
     return arg;
 
   // No embedded double quotes or backlashes, just wrap quote marks around
   // the whole thing.
-  if (arg.find_first_of("\"\\") == std::string::npos)
-    return std::string("\"") + arg + '"';
+  if (arg.find_first_of(L"\"\\") == std::wstring::npos)
+    return std::wstring(L"\"") + arg + L'"';
 
   // Expected input/output:
   //   input : hello"world
@@ -47,25 +47,25 @@ std::string QuoteCmdArg(const std::string& arg) {
     }
   }
 
-  return std::string("\"") + std::string(quoted.rbegin(), quoted.rend()) + '"';
+  return std::wstring(L"\"") + std::wstring(quoted.rbegin(), quoted.rend()) + L'"';
 }
 
-bool Runas(const std::string& command,
-           const std::vector<std::string>& args,
-           const std::string& std_input,
-           std::string* std_output,
-           std::string* std_error,
+bool Runas(const std::wstring& command,
+           const std::vector<std::wstring>& args,
+           const std::wstring& std_input,
+           std::wstring* std_output,
+           std::wstring* std_error,
            int options,
            int* exit_code) {
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 
-  std::string parameters;
+  std::wstring parameters;
   for (size_t i = 0; i < args.size(); ++i)
-    parameters += QuoteCmdArg(args[i]) + ' ';
+    parameters += QuoteCmdArg(args[i]) + L' ';
 
-  SHELLEXECUTEINFO sei = { sizeof(sei) };
+  SHELLEXECUTEINFOW sei = { sizeof(sei) };
   sei.fMask = SEE_MASK_NOASYNC | SEE_MASK_NOCLOSEPROCESS;
-  sei.lpVerb = (options & OPTION_ADMIN) ? "runas" : "open";
+  sei.lpVerb = (options & OPTION_ADMIN) ? std::wstring(L"runas").c_str() : std::wstring(L"open").c_str();
   sei.lpFile = command.c_str();
   sei.lpParameters = parameters.c_str();
   sei.nShow = SW_NORMAL;
@@ -73,7 +73,7 @@ bool Runas(const std::string& command,
   if (options & OPTION_HIDE)
     sei.nShow = SW_HIDE;
 
-  if (::ShellExecuteEx(&sei) == FALSE || sei.hProcess == NULL)
+  if (::ShellExecuteExW(&sei) == FALSE || sei.hProcess == NULL)
     return false;
 
   // Wait for the process to complete.
