@@ -12,30 +12,10 @@ on:
       - released
 
 jobs:
-  test:
-    strategy:
-      matrix:
-        os:
-          - windows-latest
-        node:
-          - 14
-          - 16
-    name: Testing Node ${{ matrix.node }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node }}
-      - run: npm install --ignore-scripts
-      - run: npm run build-debug
-      - run: npm test
-
   publish:
     if: ${{ github.event_name == 'release' }}
     name: Publishing to NPM
     runs-on: ubuntu-18.04
-    needs: test
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
