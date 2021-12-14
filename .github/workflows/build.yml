@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: 16
       - run: npm install --ignore-scripts
-      - run: npx --no-install prebuild -r node -t 14.0.0 -t 16.0.0 --include-regex 'runas.node$' -u ${{ secrets.GITHUB_TOKEN }}
-      - run: npx --no-install prebuild -r electron -t 13.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 --include-regex 'runas.node$' -u ${{ secrets.GITHUB_TOKEN }}
+      - run: npx --no-install prebuild -r node -t 14.0.0 -t 16.0.0 -u ${{ secrets.GITHUB_TOKEN }}
+      - run: npx --no-install prebuild -r electron -t 13.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 -u ${{ secrets.GITHUB_TOKEN }}
       - if: matrix.os == 'windows-latest'
-        run: npx --no-install prebuild -r electron -t 13.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 --include-regex 'runas.node$' --arch ia32 -u ${{ secrets.GITHUB_TOKEN }}
+        run: npx --no-install prebuild -r electron -t 13.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 --arch ia32 -u ${{ secrets.GITHUB_TOKEN }}

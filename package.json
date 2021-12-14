@@ -1,7 +1,7 @@
 {
   "main": "./lib/runas.js",
   "name": "runas-redux-rus",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "licenses": [
     {
       "type": "MIT",
@@ -15,7 +15,11 @@
   "bugs": {
     "url": "https://github.com/N-Blade/node-runas-redux/issues"
   },
+  "dependencies": {
+    "prebuild-install": "^7.0.0"
+  },
   "devDependencies": {
-    "node-addon-api": "^3.0.0"
+    "node-addon-api": "^3.0.0",
+    "prebuild": "^11.0.0"
   }
 }
