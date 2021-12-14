@@ -10,14 +10,14 @@ Run command synchronously with administrator privilege.
 ## Installing
 
 ```sh
-npm install runas-redux
+npm install node-runas-redux
 ```
 
 ## Building
   * Clone the repository
   * Run `npm install`
-  * Run `grunt` to compile the native and CoffeeScript code
-  * Run `grunt test` to run the specs
+  * Run `node-gyp configure`
+  * Run `node-gyp build`
 
 ## Docs
 
