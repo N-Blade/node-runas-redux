@@ -1,7 +1,7 @@
 {
   "main": "./lib/runas.js",
   "name": "runas-redux",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "licenses": [
     {
       "type": "MIT",
@@ -10,10 +10,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/eugeny/node-runas-redux.git"
+    "url": "https://github.com/N-Blade/node-runas-redux.git"
   },
   "bugs": {
-    "url": "https://github.com/eugeny/node-runas-redux/issues"
+    "url": "https://github.com/N-Blade/node-runas-redux/issues"
   },
   "devDependencies": {
     "node-addon-api": "^3.0.0"

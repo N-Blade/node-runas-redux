@@ -1,6 +1,6 @@
 # Runas Redux
 
-![Node.js CI](https://github.com/Eugeny/node-runas-redux/workflows/Node.js%20CI/badge.svg)
+![Node.js CI](https://github.com/N-Blade/node-runas-redux/workflows/Node.js%20CI/badge.svg)
 
 Run command synchronously with administrator privilege.
 
@@ -45,12 +45,4 @@ When the `catchOutput` option is specified to `true`, an object that contains
 
 ## Limitations
 
-* The `admin` option has only been implemented on Windows and OS X.
-* The `stdin` option has only been implemented on POSIX systems.
-* The `hide` option is only meaningful on Windows.
-* When `catchOutput` is `true`,
-  * on Linux `exitCode`, `stdout` and `stderr` will be returned,
-  * on OS X
-    * if `admin` is `false`, `exitCode`, `stdout` and `stderr` will be returned,
-    * if `admin` is `true`, `exitCode` and `stdout` will be returned,
-  * on Windows only `exitCode` will be returned.
+* Only windows is supported
