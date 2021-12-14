@@ -10,7 +10,7 @@ Run command synchronously with administrator privilege.
 ## Installing
 
 ```sh
-npm install node-runas-redux
+npm install runas-redux-rus
 ```
 
 ## Building
@@ -22,7 +22,7 @@ npm install node-runas-redux
 ## Docs
 
 ```js
-const runas = require('runas-redux')
+const runas = require('runas-redux-rus')
 ```
 
 ### runas(command, args[, options])
