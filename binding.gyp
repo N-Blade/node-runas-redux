@@ -51,6 +51,7 @@
                         "libraries": [
                             "$(SDKROOT)/System/Library/Frameworks/Security.framework",
                         ],
+                        "defines": ["NAPI_DISABLE_CPP_EXCEPTIONS"],
                     },
                 ],
                 [
