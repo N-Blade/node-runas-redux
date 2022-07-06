@@ -14,7 +14,35 @@ jobs:
     runs-on: windows-2019
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [16.x, 18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn
+
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn
+
+  build-macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
 
     steps:
       - uses: actions/checkout@v2

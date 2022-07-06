@@ -31,6 +31,8 @@ jobs:
       matrix:
         os:
           - windows-2019
+          - ubuntu-latest
+          - macos-latest
     name: Prebuild on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: publish
@@ -40,7 +42,7 @@ jobs:
         with:
           node-version: 16
       - run: npm install --ignore-scripts
-      - run: npx --no-install prebuild -r node -t 16.0.0 -t 17.0.0 -u ${{ secrets.GITHUB_TOKEN }}
-      - run: npx --no-install prebuild -r electron -t 17.0.0 -t 18.0.0 -u ${{ secrets.GITHUB_TOKEN }}
+      - run: npx --no-install prebuild -r node -t 16.0.0 -t 18.0.0 -u ${{ secrets.GITHUB_TOKEN }}
+      - run: npx --no-install prebuild -r electron -t 17.0.0 -t 18.0.0 -t 19.0.0 -u ${{ secrets.GITHUB_TOKEN }}
       - if: matrix.os == 'windows-2019'
-        run: npx --no-install prebuild -r electron -t 17.0.0 -t 18.0.0 --arch ia32 -u ${{ secrets.GITHUB_TOKEN }}
+        run: npx --no-install prebuild -r electron -t 17.0.0 -t 18.0.0 -t 19.0.0 --arch ia32 -u ${{ secrets.GITHUB_TOKEN }}
