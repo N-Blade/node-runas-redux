@@ -45,4 +45,4 @@ When the `catchOutput` option is specified to `true`, an object that contains
 
 ## Limitations
 
-* Only windows is supported
+* tell me? :)
