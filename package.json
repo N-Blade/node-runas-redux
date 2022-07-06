@@ -1,7 +1,7 @@
 {
   "main": "./lib/runas.js",
   "name": "runas-redux-rus",
-  "version": "5.0.12",
+  "version": "5.0.13",
   "licenses": [
     {
       "type": "MIT",
