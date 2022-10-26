@@ -16,9 +16,7 @@
     "url": "https://github.com/N-Blade/node-runas-redux/issues"
   },
   "dependencies": {
-    "prebuild-install": "^7.1.1"
-  },
-  "devDependencies": {
+    "prebuild-install": "^7.1.1",
     "node-addon-api": "^5.0.0",
     "prebuild": "^11.0.4"
   }
