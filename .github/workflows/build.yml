@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - windows-2019
+          - windows-2022
           - ubuntu-latest
           - macos-latest
     name: Prebuild on ${{ matrix.os }}
@@ -44,5 +44,5 @@ jobs:
       - run: npm install --ignore-scripts
       - run: npx --no-install prebuild -r node -t 16.0.0 -t 18.0.0 -u ${{ secrets.GITHUB_TOKEN }}
       - run: npx --no-install prebuild -r electron -t 17.0.0 -t 18.0.0 -t 19.0.0 -t 20.0.0 -t 21.0.0 -t 22.0.0 -u ${{ secrets.GITHUB_TOKEN }}
-      - if: matrix.os == 'windows-2019'
+      - if: matrix.os == 'windows-2022'
         run: npx --no-install prebuild -r electron -t 17.0.0 -t 18.0.0 -t 19.0.0 -t 20.0.0 -t 21.0.0 -t 22.0.0 --arch ia32 -u ${{ secrets.GITHUB_TOKEN }}
